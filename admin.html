@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Vinix7 WebSpire</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
+    <style>
+        /* Additional styles for bank account status alignment in modal */
+        .bank-account-preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .bank-account-preview-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .bank-account-preview-item strong {
+            color: var(--dark);
+            min-width: 120px;
+        }
+        
+        .bank-account-preview-item .status-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-badge-modal {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .status-active-modal {
+            background: var(--success);
+            color: white;
+        }
+        
+        .status-inactive-modal {
+            background: var(--gray);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="img/logo.png" alt="Vinix7 WebSpire" class="login-logo">
+                <h2>Admin Dashboard</h2>
+                <p>Masuk untuk mengelola pemesanan</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" class="dashboard-container" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.png" alt="Vinix7 WebSpire" class="sidebar-logo">
+                <h2>Vinix7 WebSpire</h2>
+                <p>Admin Dashboard</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="overview">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="nav-item" data-section="orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Pemesanan</span>
+                    <span class="badge" id="ordersBadge">0</span>
+                </a>
+                <a href="#" class="nav-item" data-section="packages">
+                    <i class="fas fa-box"></i>
+                    <span>Paket</span>
+                </a>
+                <a href="#" class="nav-item" data-section="customers">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+                <a href="#" class="nav-item" data-section="bankAccounts">
+                    <i class="fas fa-university"></i>
+                    <span>Rekening Bank</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name">Administrator</span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard Overview</h1>
+                    <p id="pageSubtitle">Ringkasan statistik dan aktivitas terbaru</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-display">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Overview Section -->
+            <section id="overviewSection" class="content-section active">
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon total">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>Total Pemesanan</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingOrders">0</h3>
+                            <p>Menunggu Pembayaran</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon paid">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="paidOrders">0</h3>
+                            <p>Sudah Bayar</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completedOrders">0</h3>
+                            <p>Selesai</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>15%</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon cancelled">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="cancelledOrders">0</h3>
+                            <p>Dibatalkan</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-minus"></i>
+                            <span>2%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Recent Activity -->
+                <div class="content-grid">
+                    <div class="chart-container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Statistik Pemesanan</h3>
+                                <div class="card-actions">
+                                    <button class="btn-icon" onclick="refreshOrdersChart()">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="ordersChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-activity">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Aktivitas Terbaru</h3>
+                                <div class="card-actions">
+                                    <a href="#" class="view-all-link" onclick="navigateToOrders()">
+                                        Lihat semua
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="recentActivities" class="activity-list">
+                                    <!-- Activities will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="ordersSection" class="content-section">
+                <div class="section-header">
+                    <h2>Daftar Pemesanan</h2>
+                    <div class="section-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchOrders" placeholder="Cari pemesanan...">
+                        </div>
+                        <button class="btn btn-primary" onclick="exportOrders()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="card filter-card">
+                    <div class="card-header">
+                        <h3>Filter Pemesanan</h3>
+                        <button class="btn btn-secondary btn-sm" onclick="resetFilters()">
+                            <i class="fas fa-refresh"></i> Reset Filter
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-grid">
+                            <div class="form-group">
+                                <label for="filterStatus">Status</label>
+                                <select id="filterStatus" class="form-control">
+                                    <option value="">Semua Status</option>
+                                    <option value="pending">Menunggu Pembayaran</option>
+                                    <option value="paid">Sudah Bayar</option>
+                                    <option value="completed">Selesai</option>
+                                    <option value="cancelled">Dibatalkan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filterPackage">Paket</label>
+                                <select id="filterPackage" class="form-control">
+                                    <option value="">Semua Paket</option>
+                                    <!-- Package options will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filterDateStart">Tanggal Mulai</label>
+                                <input type="date" id="filterDateStart" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="filterDateEnd">Tanggal Akhir</label>
+                                <input type="date" id="filterDateEnd" class="form-control">
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="btn btn-primary" onclick="applyFilters()">
+                                <i class="fas fa-filter"></i> Terapkan Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Paket</th>
+                                        <th>Tanggal</th>
+                                        <th>Harga</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersList">
+                                    <!-- Orders will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Packages Section -->
+            <section id="packagesSection" class="content-section">
+                <div class="section-header">
+                    <h2>Manajemen Paket</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="showAddPackageModal()">
+                            <i class="fas fa-plus"></i> Tambah Paket
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="packages-grid" id="packagesList">
+                            <!-- Packages will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customersSection" class="content-section">
+                <div class="section-header">
+                    <h2>Data Customers</h2>
+                    <div class="section-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchCustomers" placeholder="Cari customer...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="customers-grid" id="customersList">
+                            <!-- Customers will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bank Accounts Section -->
+            <section id="bankAccountsSection" class="content-section">
+                <div class="section-header">
+                    <h2>Manajemen Rekening Bank</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" onclick="showAddBankAccountModal()">
+                            <i class="fas fa-plus"></i> Tambah Rekening
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="bank-accounts-grid" id="bankAccountsList">
+                            <!-- Bank accounts will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detail Pemesanan</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetailContent">
+                    <!-- Order details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Proof Modal -->
+    <div id="paymentProofModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>Bukti Pembayaran</h3>
+                <button class="modal-close" onclick="closePaymentProofModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="paymentProofContent">
+                    <!-- Payment proof content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Package Modal -->
+    <div id="packageModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="packageModalTitle">Tambah Paket Baru</h3>
+                <button class="modal-close" onclick="closePackageModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="packageForm">
+                    <input type="hidden" id="packageId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="packageName">Nama Paket *</label>
+                            <input type="text" id="packageName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="packagePrice">Harga *</label>
+                            <input type="number" id="packagePrice" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="packageDescription">Deskripsi *</label>
+                        <textarea id="packageDescription" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Fitur-fitur Paket</label>
+                        <div id="packageFeatures">
+                            <!-- Features will be populated by JavaScript -->
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addFeatureField()" style="margin-top: 10px;">
+                            <i class="fas fa-plus"></i> Tambah Fitur
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="packagePopular"> 
+                            Jadikan sebagai paket popular
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">Simpan Paket</button>
+                        <button type="button" class="btn btn-secondary" onclick="closePackageModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Bank Account Modal -->
+    <div id="bankAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="bankAccountModalTitle">Tambah Rekening Bank</h3>
+                <button class="modal-close" onclick="closeBankAccountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bankAccountForm">
+                    <input type="hidden" id="bankAccountId">
+                    <div class="form-group">
+                        <label for="bankName">Nama Bank *</label>
+                        <input type="text" id="bankName" class="form-control" required placeholder="Contoh: BCA, Mandiri, BNI">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNumber">Nomor Rekening *</label>
+                        <input type="text" id="accountNumber" class="form-control" required placeholder="Contoh: 1234 5678 9012">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountHolder">Atas Nama *</label>
+                        <input type="text" id="accountHolder" class="form-control" required placeholder="Nama pemilik rekening">
+                    </div>
+                    <div class="form-group">
+                        <label for="bankLogo">Logo Bank (URL)</label>
+                        <input type="text" id="bankLogo" class="form-control" placeholder="https://example.com/logo-bank.png">
+                        <small class="form-text">Opsional: URL gambar logo bank</small>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="isActive"> 
+                            Aktifkan rekening ini
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">Simpan Rekening</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeBankAccountModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Order Modal -->
+    <div id="editOrderModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>Edit Pemesanan</h3>
+                <button class="modal-close" onclick="closeEditOrderModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editOrderForm">
+                    <input type="hidden" id="editOrderId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editOrderName">Nama Lengkap *</label>
+                            <input type="text" id="editOrderName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOrderEmail">Email *</label>
+                            <input type="email" id="editOrderEmail" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editOrderPhone">Nomor WhatsApp *</label>
+                            <input type="tel" id="editOrderPhone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOrderPackage">Jenis Paket *</label>
+                            <select id="editOrderPackage" class="form-control" required>
+                                <option value="">Pilih Paket</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOrderDescription">Deskripsi Kebutuhan Website *</label>
+                        <textarea id="editOrderDescription" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editOrderMeetingDate">Jadwal Meeting Konsultasi *</label>
+                            <input type="datetime-local" id="editOrderMeetingDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editOrderStatus">Status *</label>
+                            <select id="editOrderStatus" class="form-control" required>
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOrderNotes">Catatan Tambahan</label>
+                        <textarea id="editOrderNotes" class="form-control" rows="3" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeEditOrderModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteOrderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Konfirmasi Hapus</h3>
+                <button class="modal-close" onclick="closeDeleteOrderModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus pemesanan ini?</p>
+                <div class="order-preview" id="deleteOrderPreview">
+                    <!-- Order preview will be populated by JavaScript -->
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" onclick="confirmDeleteOrder()">Ya, Hapus</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeDeleteOrderModal()">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Bank Account Confirmation Modal -->
+    <div id="deleteBankAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Konfirmasi Hapus</h3>
+                <button class="modal-close" onclick="closeDeleteBankAccountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus rekening bank ini?</p>
+                <div class="bank-account-preview" id="deleteBankAccountPreview">
+                    <!-- Bank account preview will be populated by JavaScript -->
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" onclick="confirmDeleteBankAccount()">Ya, Hapus</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeDeleteBankAccountModal()">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

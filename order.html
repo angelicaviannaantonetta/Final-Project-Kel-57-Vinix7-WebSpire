@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemesanan - Vinix7 WebSpire</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#home" class="logo-container">
+                    <img src="img/logo.png" alt="Vinix7 WebSpire" class="logo">
+                    <span class="logo-text">WebSpire</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Beranda</a></li>
+                    <li><a href="index.html#about">Tentang</a></li>
+                    <li><a href="index.html#portfolio">Portofolio</a></li>
+                    <li><a href="index.html#services">Layanan</a></li>
+                    <li><a href="index.html#pricing">Paket</a></li>
+                    <li><a href="index.html#testimonials">Testimoni</a></li>
+                    <li><a href="index.html#process">Alur</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                </ul>
+                <a href="https://wa.me/6281234567890?text=Halo%20Vinix%20WebSpire,%20saya%20ingin%20konsultasi%20tentang%20pembuatan%20website" class="wa-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Hubungi Kami</span>
+                </a>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Form Pemesanan Website</h2>
+            
+            <form id="orderForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap *</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Nomor WhatsApp *</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="package">Jenis Paket *</label>
+                        <select id="package" name="package" class="form-control" required>
+                            <option value="">Pilih Paket</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Deskripsi Kebutuhan Website *</label>
+                    <textarea id="description" name="description" class="form-control" rows="5" placeholder="Jelaskan kebutuhan website Anda, tujuan, fitur yang diinginkan, dll." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="meetingDate">Jadwal Meeting Konsultasi *</label>
+                    <input type="datetime-local" id="meetingDate" name="meetingDate" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-full">Lanjut ke Pembayaran</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Vinix7 WebSpire</h3>
+                    <p>Penyedia jasa pembuatan website profesional dengan pengalaman lebih dari 5 tahun. Kami siap membantu bisnis Anda tumbuh dengan kehadiran online yang kuat.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Navigasi Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Beranda</a></li>
+                        <li><a href="index.html#about">Tentang</a></li>
+                        <li><a href="index.html#portfolio">Portofolio</a></li>
+                        <li><a href="index.html#services">Layanan</a></li>
+                        <li><a href="index.html#pricing">Paket</a></li>
+                        <li><a href="index.html#testimonials">Testimoni</a></li>
+                        <li><a href="index.html#process">Alur</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Kontak</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Jl. Raden Mattaher No. 88, Jakarta</li>
+                        <li><i class="fas fa-phone"></i> +62 812-3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> info@vinix7webspire.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Ikuti Kami</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vinix7 WebSpire. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderForm = document.getElementById('orderForm');
+            const packageSelect = document.getElementById('package');
+            
+            // Load packages into select
+            const packages = orderSystem.getPackages();
+            packageSelect.innerHTML = '<option value="">Pilih Paket</option>' + 
+                packages.map(pkg => `
+                    <option value="${pkg.id}">${pkg.name} - ${formatCurrency(pkg.price)}</option>
+                `).join('');
+            
+            // Set minimum date for meeting (tomorrow)
+            const meetingDate = document.getElementById('meetingDate');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            meetingDate.min = tomorrow.toISOString().slice(0, 16);
+            
+            // Pre-select package from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const packageParam = urlParams.get('package');
+            if (packageParam) {
+                packageSelect.value = packageParam;
+            }
+            
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    package: document.getElementById('package').value,
+                    description: document.getElementById('description').value,
+                    meetingDate: document.getElementById('meetingDate').value
+                };
+                
+                // Validate form
+                if (!formData.name || !formData.email || !formData.phone || !formData.package || !formData.description || !formData.meetingDate) {
+                    showNotification('Harap lengkapi semua field yang wajib diisi!', 'error');
+                    return;
+                }
+                
+                // Save order data to localStorage temporarily
+                localStorage.setItem('currentOrder', JSON.stringify(formData));
+                
+                // Redirect to payment page
+                window.location.href = 'payment.html';
+            });
+        });
+    </script>
+</body>
+</html>

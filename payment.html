@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran - Vinix7 WebSpire</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#home" class="logo-container">
+                    <img src="img/logo.png" alt="Vinix7 WebSpire" class="logo">
+                    <span class="logo-text">WebSpire</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Beranda</a></li>
+                    <li><a href="index.html#about">Tentang</a></li>
+                    <li><a href="index.html#portfolio">Portofolio</a></li>
+                    <li><a href="index.html#services">Layanan</a></li>
+                    <li><a href="index.html#pricing">Paket</a></li>
+                    <li><a href="index.html#testimonials">Testimoni</a></li>
+                    <li><a href="index.html#process">Alur</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                </ul>
+                <a href="https://wa.me/6281234567890?text=Halo%20Vinix%20WebSpire,%20saya%20ingin%20konsultasi%20tentang%20pembuatan%20website" class="wa-button" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Hubungi Kami</span>
+                </a>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Detail Pemesanan & Pembayaran</h2>
+            
+            <div id="orderSummary" class="order-summary">
+                <!-- Order summary will be populated by JavaScript -->
+            </div>
+
+            <div class="payment-info">
+                <h4><i class="fas fa-university"></i> Informasi Rekening Pembayaran</h4>
+                
+                <div id="bankAccountsList">
+                    <!-- Bank accounts will be populated by JavaScript -->
+                </div>
+                
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+                    <i class="fas fa-info-circle"></i> 
+                    Setelah melakukan pembayaran, harap konfirmasi dengan mengupload bukti transfer pada form di bawah.
+                </p>
+            </div>
+
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label>Upload Bukti Pembayaran *</label>
+                    <div class="file-upload" id="fileUpload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Klik untuk upload bukti transfer</p>
+                        <p class="file-name" id="fileName">Belum ada file yang dipilih</p>
+                        <input type="file" id="paymentProof" class="file-input" accept="image/*,.pdf">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Catatan (Opsional)</label>
+                    <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-full">Konfirmasi Pembayaran</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Vinix7 WebSpire</h3>
+                    <p>Penyedia jasa pembuatan website profesional dengan pengalaman lebih dari 5 tahun. Kami siap membantu bisnis Anda tumbuh dengan kehadiran online yang kuat.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Navigasi Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Beranda</a></li>
+                        <li><a href="index.html#about">Tentang</a></li>
+                        <li><a href="index.html#portfolio">Portofolio</a></li>
+                        <li><a href="index.html#services">Layanan</a></li>
+                        <li><a href="index.html#pricing">Paket</a></li>
+                        <li><a href="index.html#testimonials">Testimoni</a></li>
+                        <li><a href="index.html#process">Alur</a></li>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Kontak</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Jl. Raden Mattaher No. 88, Jakarta</li>
+                        <li><i class="fas fa-phone"></i> +62 812-3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> info@vinix7webspire.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Ikuti Kami</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vinix7 WebSpire. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderSummary = document.getElementById('orderSummary');
+            const paymentForm = document.getElementById('paymentForm');
+            const fileUpload = document.getElementById('fileUpload');
+            const paymentProof = document.getElementById('paymentProof');
+            const fileName = document.getElementById('fileName');
+            const bankAccountsList = document.getElementById('bankAccountsList');
+            
+            // Get current order data
+            const currentOrder = JSON.parse(localStorage.getItem('currentOrder'));
+            
+            if (!currentOrder) {
+                showNotification('Data pemesanan tidak ditemukan!', 'error');
+                setTimeout(() => {
+                    window.location.href = 'order.html';
+                }, 2000);
+                return;
+            }
+            
+            // Display order summary
+            const packageDetails = orderSystem.getPackageDetails(currentOrder.package);
+            const price = packageDetails.price;
+            
+            orderSummary.innerHTML = `
+                <h3>Detail Pemesanan</h3>
+                <div class="summary-item">
+                    <span>Nama:</span>
+                    <span>${currentOrder.name}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Email:</span>
+                    <span>${currentOrder.email}</span>
+                </div>
+                <div class="summary-item">
+                    <span>No. WhatsApp:</span>
+                    <span>${currentOrder.phone}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Paket:</span>
+                    <span>${packageDetails.name}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Jadwal Meeting:</span>
+                    <span>${new Date(currentOrder.meetingDate).toLocaleString('id-ID')}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total Pembayaran:</span>
+                    <span>${formatCurrency(price)}</span>
+                </div>
+            `;
+            
+            // Display bank accounts
+            const activeBankAccounts = orderSystem.getActiveBankAccounts();
+            
+            if (activeBankAccounts.length === 0) {
+                bankAccountsList.innerHTML = `
+                    <div class="bank-account">
+                        <strong>BCA</strong><br>
+                        No. Rekening: 1234 5678 9012<br>
+                        Atas Nama: PT. Vinix7 WebSpire Indonesia
+                    </div>
+                    
+                    <div class="bank-account">
+                        <strong>Mandiri</strong><br>
+                        No. Rekening: 9876 5432 1098<br>
+                        Atas Nama: PT. Vinix7 WebSpire Indonesia
+                    </div>
+                    
+                    <div class="bank-account">
+                        <strong>BNI</strong><br>
+                        No. Rekening: 5678 9012 3456<br>
+                        Atas Nama: PT. Vinix7 WebSpire Indonesia
+                    </div>
+                `;
+            } else {
+                bankAccountsList.innerHTML = activeBankAccounts.map(account => `
+                    <div class="bank-account">
+                        <strong>${account.bankName}</strong><br>
+                        No. Rekening: ${formatAccountNumber(account.accountNumber)}<br>
+                        Atas Nama: ${account.accountHolder}
+                    </div>
+                `).join('');
+            }
+            
+            // File upload handling
+            fileUpload.addEventListener('click', function() {
+                paymentProof.click();
+            });
+            
+            paymentProof.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    fileName.textContent = file.name;
+                    
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        showNotification('Ukuran file terlalu besar! Maksimal 5MB.', 'error');
+                        paymentProof.value = '';
+                        fileName.textContent = 'Belum ada file yang dipilih';
+                        return;
+                    }
+                    
+                    // Validate file type
+                    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+                    if (!allowedTypes.includes(file.type)) {
+                        showNotification('Format file tidak didukung! Gunakan JPG, PNG, atau PDF.', 'error');
+                        paymentProof.value = '';
+                        fileName.textContent = 'Belum ada file yang dipilih';
+                        return;
+                    }
+                }
+            });
+            
+            // Form submission
+            paymentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const file = paymentProof.files[0];
+                const notes = document.getElementById('notes').value;
+                
+                if (!file) {
+                    showNotification('Harap upload bukti pembayaran!', 'error');
+                    return;
+                }
+                
+                // Read file as data URL
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        data: e.target.result,
+                        uploadedAt: new Date().toISOString(),
+                        size: file.size
+                    };
+                    
+                    // Create order in system
+                    const orderData = {
+                        ...currentOrder,
+                        packagePrice: price,
+                        notes: notes,
+                        meetingDate: currentOrder.meetingDate
+                    };
+                    
+                    const order = orderSystem.createOrder(orderData);
+                    orderSystem.addPaymentProof(order.id, fileData);
+                    
+                    // Clear temporary data
+                    localStorage.removeItem('currentOrder');
+                    
+                    showNotification('Pembayaran berhasil dikonfirmasi! Tim kami akan menghubungi Anda dalam 1x24 jam.');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                };
+                
+                reader.onerror = function() {
+                    showNotification('Gagal membaca file! Silakan coba lagi.', 'error');
+                };
+                
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Helper function to format account number
+        function formatAccountNumber(accountNumber) {
+            return accountNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+        }
+    </script>
+</body>
+</html>
